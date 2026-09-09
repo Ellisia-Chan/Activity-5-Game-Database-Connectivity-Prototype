@@ -1,6 +1,9 @@
 using UnityEngine;
 
 namespace Features.Player {
+    /// <summary>
+    /// Handles player animations 
+    /// </summary>
 	public class PlayerAnimations : MonoBehaviour {
 
 		[Header("Components")] 

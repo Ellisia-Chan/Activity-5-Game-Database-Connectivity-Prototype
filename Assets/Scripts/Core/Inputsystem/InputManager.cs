@@ -1,9 +1,11 @@
 using UnityEngine;
 
-using ServiceLocator;
-using Services.InputSystem;
+using Core.ServiceLocator;
 
 namespace InputSystem {
+    /// <summary>
+    /// Manages the input system for the game
+    /// </summary>
     public class InputManager : MonoBehaviour, IInputSystem {
 
         private InputSystem_Actions inputActions;

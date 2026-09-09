@@ -1,23 +1,21 @@
 using UnityEngine;
 
-using ServiceLocator;
-using Services.InputSystem;
+using Core.ServiceLocator;
 
 namespace Features.Player {
-
+    /// <summary>
+    /// Handles player movement 
+    /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerMovement : MonoBehaviour {
 
         [Header("Movement")]
         [SerializeField, Min(0f)] private float moveSpeed = 6f;
 
+        // --- Service Dependencies ---
+        private IInputSystem inputSystemService;
 
         private Rigidbody2D rb;
-
-        // --- Services ---
-        private IInputSystem inputSystem;
-
-
         private Vector2 moveDir;
 
         // --- Public Properties ---
@@ -37,7 +35,7 @@ namespace Features.Player {
         }
 
         private void Start() {
-            inputSystem = ServiceRegistry.Get<IInputSystem>();
+            inputSystemService = ServiceRegistry.Get<IInputSystem>();
 
             isMoving = false;
         }
@@ -62,9 +60,8 @@ namespace Features.Player {
         /// </summary>
         /// <returns></returns>
         private void HandleInput() {
-            moveDir = inputSystem.GetMovementVector();
+            moveDir = inputSystemService.GetMovementVector();
 
-            // Snaps horizontal input directly to -1, 0, or 1
             if (Mathf.Abs(moveDir.x) > 0.01f) {
                 horizontalDir = Mathf.Sign(moveDir.x);
             }
@@ -85,7 +82,7 @@ namespace Features.Player {
         }
 
         /// <summary> 
-        /// Controls player speed 
+        /// Controls player speed to max specified speed
         /// </summary>
         /// <returns></returns>
         private void SpeedControl() {

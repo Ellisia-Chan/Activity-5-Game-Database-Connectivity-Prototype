@@ -768,6 +768,115 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &547699043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 547699044}
+  - component: {fileID: 547699045}
+  m_Layer: 0
+  m_Name: ItemSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &547699044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547699043}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1083872126}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &547699045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547699043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2436135de8b56d44890b8e745ba521e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.ItemSpawner.ItemSpawner
+  itemData:
+  - poolItemSO: {fileID: 11400000, guid: f5d215915adb86049a6b46cb19df534b, type: 2}
+    probability: 0.25
+  - poolItemSO: {fileID: 11400000, guid: 06c3e78d51f255845871bb1e5437e0ff, type: 2}
+    probability: 0.2
+  - poolItemSO: {fileID: 11400000, guid: 8f3a76c314911e7429b8925bf75b4ba6, type: 2}
+    probability: 0.17
+  - poolItemSO: {fileID: 11400000, guid: 5c15b82b17982dd4a83e065ec3161fac, type: 2}
+    probability: 0.15
+  - poolItemSO: {fileID: 11400000, guid: 0a4f53b7e1457ba4781dc15cbe774e2d, type: 2}
+    probability: 0.13
+  - poolItemSO: {fileID: 11400000, guid: 9d1d360d2ebb43e4fa4493e69e93a125, type: 2}
+    probability: 0.1
+  spawnPoints: []
+--- !u!1 &554050867
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 554050868}
+  - component: {fileID: 554050869}
+  m_Layer: 0
+  m_Name: PoolSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &554050868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554050867}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1083872126}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &554050869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554050867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a3e028acc7e7b94faa86c5bb75d0fc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PoolSystem.PoolRuntimeSystem
+  pools:
+  - {fileID: 11400000, guid: f5d215915adb86049a6b46cb19df534b, type: 2}
+  - {fileID: 11400000, guid: 8f3a76c314911e7429b8925bf75b4ba6, type: 2}
+  - {fileID: 11400000, guid: 06c3e78d51f255845871bb1e5437e0ff, type: 2}
+  - {fileID: 11400000, guid: 0a4f53b7e1457ba4781dc15cbe774e2d, type: 2}
+  - {fileID: 11400000, guid: 9d1d360d2ebb43e4fa4493e69e93a125, type: 2}
+  - {fileID: 11400000, guid: 5c15b82b17982dd4a83e065ec3161fac, type: 2}
 --- !u!1 &612642202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,6 +2070,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1408653269}
+  - {fileID: 554050868}
+  - {fileID: 547699044}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1128362394
@@ -2931,7 +3042,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
