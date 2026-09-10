@@ -35,7 +35,9 @@ namespace InputSystem {
             inputActions.Disable();
         }
 
-
+        private void OnDestroy() {
+            ServiceRegistry.Unregister<IInputSystem>(this);
+        }
         // =====================================================================
         //
         //                          Interface Methods

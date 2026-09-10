@@ -1,32 +1,28 @@
-using UnityEngine;
+using Core.Enums;
+using Core.Events.GameSystem;
+using Core.EventSystem;
 using Core.PoolSystem;
 using Core.ServiceLocator;
-using Core.GameSystem;
+using Features.Item;
+using UnityEngine;
 
 namespace Features.ItemSpawner {
-    [System.Serializable]
-    public class ItemData {
-        public PoolItemSO poolItemSO;
-        [Range(0f, 1f)] public float probability;
-        public int score;
-    }
-
+    /// <summary>
+    /// Spawns items at random locations.
+    /// </summary>
     public class ItemSpawner : MonoBehaviour {
-        [Header("Configuration")]
-        [SerializeField] private LevelData levelData;
-
         [Header("ItemData")]
-        [SerializeField] private ItemData[] itemData;
+        [SerializeField] private ItemDataSO[] itemData;
 
         [Header("Spawnpoints")]
         [SerializeField] private Transform[] spawnPoints;
 
         // --- Service Dependencies ---
         private IPoolSystem poolSystemService;
+        private IGameSystem gameSystemService;
 
 
         // --- Runtime State ---
-        private float _elapsedLevelTime = 0f;
         private float _spawnCooldown;
         private bool _isSpawningActive = false;
 
@@ -35,11 +31,20 @@ namespace Features.ItemSpawner {
         //                          Unity Lifecycle
         //
         // =====================================================================
+        private void OnEnable() {
+            EventBus.Subscribe<Evt_OnGameStateChanged>(OnGameStateChanged);
+        }
+
+        private void OnDisable() {
+            EventBus.Unsubscribe<Evt_OnGameStateChanged>(OnGameStateChanged);
+        }
+
         private void Start() {
             poolSystemService = ServiceRegistry.Get<IPoolSystem>();
+            gameSystemService = ServiceRegistry.Get<IGameSystem>();
 
             // Initialize first spawn cooldown
-            _spawnCooldown = levelData.GetSpawnInterval(0f);
+            _spawnCooldown = gameSystemService.LevelData.GetSpawnInterval(0f);
         }
 
         private void Update() {
@@ -47,29 +52,36 @@ namespace Features.ItemSpawner {
         }
 
 
+        // =====================================================================
+        //
+        //                          Event Handlers
+        //
+        // =====================================================================
+        private void OnGameStateChanged(Evt_OnGameStateChanged evt) {
+            if (evt.newState == GameState.Playing) {
+                _isSpawningActive = true;
+            } else {
+                _isSpawningActive = false;
+            }
+        }
 
         // =====================================================================
         //
         //                          Private Methods
         //
         // =====================================================================
+        /// <summary>
+        /// Updates the spawn cooldown.
+        /// </summary>
         private void InitializeSpawning() {
             if (!_isSpawningActive) return;
-
-            _elapsedLevelTime += Time.deltaTime;
-
-            // Stop spawning when the level finishes
-            if (_elapsedLevelTime >= levelData.levelDuration) {
-                _isSpawningActive = false;
-                return;
-            }
 
             _spawnCooldown -= Time.deltaTime;
 
             if (_spawnCooldown <= 0f) {
                 Spawn();
                 // Fetch next cooldown based on the updated time
-                _spawnCooldown = levelData.GetSpawnInterval(_elapsedLevelTime);
+                _spawnCooldown = gameSystemService.LevelData.GetSpawnInterval(gameSystemService.ElapsedTime);
             }
         }
 
@@ -80,22 +92,22 @@ namespace Features.ItemSpawner {
             if (itemData == null || itemData.Length == 0) return;
             if (spawnPoints == null || spawnPoints.Length == 0) return;
 
-            ItemData selectedItem = GetRandomItemByWeight();
-            if (selectedItem?.poolItemSO == null) return;
+            ItemDataSO selectedItem = GetRandomItemByWeight();
+            if (selectedItem?.PoolItemSO == null) return;
 
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
             // Retrieve from your pool service at target position/rotation
-            poolSystemService.SpawnFromPool(selectedItem.poolItemSO.name, spawnPoint.position, spawnPoint.rotation);
+            poolSystemService.SpawnFromPool(selectedItem.PoolItemSO.name, spawnPoint.position, spawnPoint.rotation);
         }
 
         /// <summary>
         /// Selects an item using standard roulette-wheel weighted probability.
         /// </summary>
-        private ItemData GetRandomItemByWeight() {
+        private ItemDataSO GetRandomItemByWeight() {
             float totalWeight = 0f;
             for (int i = 0; i < itemData.Length; i++) {
-                totalWeight += itemData[i].probability;
+                totalWeight += itemData[i].Probability;
             }
 
             if (totalWeight <= 0f) {
@@ -106,7 +118,7 @@ namespace Features.ItemSpawner {
             float cumulative = 0f;
 
             for (int i = 0; i < itemData.Length; i++) {
-                cumulative += itemData[i].probability;
+                cumulative += itemData[i].Probability;
                 if (roll <= cumulative) {
                     return itemData[i];
                 }

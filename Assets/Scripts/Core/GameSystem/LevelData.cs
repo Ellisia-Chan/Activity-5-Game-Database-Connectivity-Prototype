@@ -1,8 +1,8 @@
 using UnityEngine;
 
 namespace Core.GameSystem {
-    [System.Serializable]
-    public class LevelData {
+    [CreateAssetMenu(fileName = "LevelData", menuName = "ScriptableObjects/Level Data")]
+    public class LevelData : ScriptableObject {
         public int levelID = 0;
 
         [Header("Timeline (Seconds)")]

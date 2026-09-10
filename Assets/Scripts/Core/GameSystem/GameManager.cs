@@ -15,13 +15,21 @@ namespace Core.GameSystem {
         [Tooltip("The starting state of the game")]
         [SerializeField] private GameState startingState = GameState.Waiting;
 
+        [Header("Level Data")]
+        [SerializeField] private LevelData levelData;
+
         // --- Private Properties ---
         private StateMachine<GameManager> gameFSM;
 
-        private IState lastGameState;
+        private GameState lastGameState;
 
         // --- Public Properties ---
         public GameState CurrentGameState { get; private set; }
+
+
+        // --- Interface Properties
+        public float ElapsedTime { get; private set; }
+        public LevelData LevelData => levelData;
 
 
         // =====================================================================
@@ -47,13 +55,31 @@ namespace Core.GameSystem {
 
         private void Update() {
             gameFSM?.Update();
+            HandleGameTimer();
         }
 
         private void FixedUpdate() {
             gameFSM?.FixedUpdate();
         }
 
+        private void OnDestroy() {
+            ServiceRegistry.Unregister<IGameSystem>(this);
+        }
 
+        // =====================================================================
+        //
+        //                          Private Methods
+        //
+        // =====================================================================
+        private void HandleGameTimer() {
+            if (CurrentGameState == GameState.Playing) {
+                ElapsedTime += Time.deltaTime;
+            }
+
+            if (ElapsedTime >= levelData.levelDuration) {
+                SetGameState(GameState.Over);
+            }
+        }
 
         // =====================================================================
         //
@@ -65,6 +91,8 @@ namespace Core.GameSystem {
         /// </summary>
         /// <param name="state"></param>
         public void SetGameState(GameState state) {
+            CurrentGameState = state;
+
             switch (state) {
                 case GameState.Waiting:
                     gameFSM.ChangeState(new GameState_Waiting(this, gameFSM));

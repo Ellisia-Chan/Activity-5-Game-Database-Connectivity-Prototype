@@ -890,13 +890,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2436135de8b56d44890b8e745ba521e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Features.ItemSpawner.ItemSpawner
-  levelData:
-    levelID: 0
-    levelDuration: 60
-    frenzyTimeFrame: 20
-    startSpawnRate: 1
-    maxNormalSpawnRate: 2.5
-    frenzyMultiplier: 2
   itemData:
   - poolItemSO: {fileID: 11400000, guid: f5d215915adb86049a6b46cb19df534b, type: 2}
     probability: 0.25
@@ -916,7 +909,18 @@ MonoBehaviour:
   - poolItemSO: {fileID: 11400000, guid: 9d1d360d2ebb43e4fa4493e69e93a125, type: 2}
     probability: 0.1
     score: 0
-  spawnPoints: []
+  spawnPoints:
+  - {fileID: 207314893}
+  - {fileID: 1128362395}
+  - {fileID: 115056195}
+  - {fileID: 1770878887}
+  - {fileID: 932125518}
+  - {fileID: 278575268}
+  - {fileID: 1196760457}
+  - {fileID: 887969325}
+  - {fileID: 1747575663}
+  - {fileID: 1798804981}
+  - {fileID: 4095680}
 --- !u!1 &554050867
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,6 +2167,7 @@ Transform:
   - {fileID: 1408653269}
   - {fileID: 554050868}
   - {fileID: 547699044}
+  - {fileID: 1467168399}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1128362394
@@ -2646,6 +2651,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c9f7075a4e4977ac410eb192ce4e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputSystem.InputManager
+--- !u!1 &1467168398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1467168399}
+  - component: {fileID: 1467168400}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1467168399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467168398}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1083872126}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1467168400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1467168398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 986e7e5faa7dbef419a857c537532a32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core.GameSystem.GameManager
+  startingState: 1
+  levelData: {fileID: 11400000, guid: 5dc7b5ebf87ac8545a9aeb6d1d41bc3c, type: 2}
 --- !u!1 &1747575662
 GameObject:
   m_ObjectHideFlags: 0

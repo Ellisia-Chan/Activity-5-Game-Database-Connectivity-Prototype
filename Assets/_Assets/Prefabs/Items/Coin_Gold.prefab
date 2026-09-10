@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8883235598014330802}
   - component: {fileID: 5650571987267798622}
   - component: {fileID: 676386655965230765}
+  - component: {fileID: -8615606118382557960}
+  - component: {fileID: 4181246075136789664}
   m_Layer: 0
   m_Name: Coin_Gold
   m_TagString: Untagged
@@ -123,3 +125,47 @@ MonoBehaviour:
   m_labelHash: 3.7686654e-24
   m_SpriteKey: 0
   m_SpriteHash: 71191876
+--- !u!50 &-8615606118382557960
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106862624264861635}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &4181246075136789664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106862624264861635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c5f403d8bc49a41a6d0f3988982366, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Features.Item.ItemController
+  downwardSpeed: 5
+  itemData:
+    poolItemSO: {fileID: 0}
+    probability: 0
+    score: 0
