@@ -5,11 +5,11 @@ namespace Core.Events.GameSystem{
     /// The event fired when the game state changes
     /// </summary>
     public readonly struct Evt_OnGameStateChanged { 
-        public readonly GameState newState;
+        public readonly GameState NewState;
 
         // Constructor
         public Evt_OnGameStateChanged(GameState newState) {
-            this.newState = newState;
+            NewState = newState;
         }
     }
 }

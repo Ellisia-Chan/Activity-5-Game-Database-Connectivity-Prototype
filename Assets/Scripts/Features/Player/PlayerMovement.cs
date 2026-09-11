@@ -1,6 +1,9 @@
 using UnityEngine;
 
 using Core.ServiceLocator;
+using Core.EventSystem;
+using Core.Events.GameSystem;
+using Core.Enums;
 
 namespace Features.Player {
     /// <summary>
@@ -9,18 +12,20 @@ namespace Features.Player {
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerMovement : MonoBehaviour {
 
-        [Header("Movement")]
+        [Header("Movement Settings")]
         [SerializeField, Min(0f)] private float moveSpeed = 6f;
 
         // --- Service Dependencies ---
         private IInputSystem inputSystemService;
 
+        // --- Private properties ---
         private Rigidbody2D rb;
         private Vector2 moveDir;
+        private GameState currentGameState;
 
         // --- Public Properties ---
-        public bool isMoving { get; private set; }
-        public float horizontalDir { get; private set; }
+        public bool IsMoving { get; private set; }
+        public float HorizontalDir { get; private set; }
 
         // =====================================================================
         //
@@ -34,10 +39,18 @@ namespace Features.Player {
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
+        private void OnEnable() {
+            EventBus.Subscribe<Evt_OnGameStateChanged>(OnGameStateChanged);
+        }
+
+        private void OnDisable() {
+            EventBus.Unsubscribe<Evt_OnGameStateChanged>(OnGameStateChanged);
+        }
+
         private void Start() {
             inputSystemService = ServiceRegistry.Get<IInputSystem>();
 
-            isMoving = false;
+            IsMoving = false;
         }
 
         private void Update() {
@@ -45,10 +58,20 @@ namespace Features.Player {
         }
 
         private void FixedUpdate() {
-            HandleMovement();
-            SpeedControl();
+            if (currentGameState == GameState.Playing) {
+                HandleMovement();
+                SpeedControl(); 
+            }
         }
 
+        // =====================================================================
+        //
+        //                          Event Handlers
+        //
+        // =====================================================================
+        private void OnGameStateChanged(Evt_OnGameStateChanged evt) {
+            currentGameState = evt.NewState;
+        }
 
         // =====================================================================
         //
@@ -63,13 +86,13 @@ namespace Features.Player {
             moveDir = inputSystemService.GetMovementVector();
 
             if (Mathf.Abs(moveDir.x) > 0.01f) {
-                horizontalDir = Mathf.Sign(moveDir.x);
+                HorizontalDir = Mathf.Sign(moveDir.x);
             }
             else {
-                horizontalDir = 0f;
+                HorizontalDir = 0f;
             }
 
-            isMoving = moveDir.sqrMagnitude > 0f;
+            IsMoving = moveDir.sqrMagnitude > 0f;
         }
 
 
@@ -78,7 +101,7 @@ namespace Features.Player {
         /// </summary>
         /// <returns></returns>
         private void HandleMovement() {
-            rb.linearVelocity = new Vector2(horizontalDir * moveSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(HorizontalDir * moveSpeed, rb.linearVelocity.y);
         }
 
         /// <summary> 

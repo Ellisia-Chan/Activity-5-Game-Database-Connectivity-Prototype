@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f5f48ff9b7970504db9179ade93cebd5, type: 3}
-  m_Name: Coin_Copper
+  m_Name: Coin_Gold
   m_EditorClassIdentifier: Assembly-CSharp::Features.Item.ItemDataSO
-  PoolItemSO: {fileID: 11400000, guid: f5d215915adb86049a6b46cb19df534b, type: 2}
-  Probability: 0.25
-  Score: 10
+  PoolItemSO: {fileID: 11400000, guid: 8f3a76c314911e7429b8925bf75b4ba6, type: 2}
+  Probability: 0.17
+  Score: 30

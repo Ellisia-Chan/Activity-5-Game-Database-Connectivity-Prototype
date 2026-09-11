@@ -1,12 +1,11 @@
 using Core.Enums;
 using Core.Events.GameSystem;
 using Core.EventSystem;
-using Core.PoolSystem;
 using Core.ServiceLocator;
 using Features.Item;
 using UnityEngine;
 
-namespace Features.ItemSpawner {
+namespace Features.ItemSpawnerSystem {
     /// <summary>
     /// Spawns items at random locations.
     /// </summary>
@@ -58,7 +57,7 @@ namespace Features.ItemSpawner {
         //
         // =====================================================================
         private void OnGameStateChanged(Evt_OnGameStateChanged evt) {
-            if (evt.newState == GameState.Playing) {
+            if (evt.NewState == GameState.Playing) {
                 _isSpawningActive = true;
             } else {
                 _isSpawningActive = false;
@@ -98,7 +97,22 @@ namespace Features.ItemSpawner {
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
             // Retrieve from your pool service at target position/rotation
-            poolSystemService.SpawnFromPool(selectedItem.PoolItemSO.name, spawnPoint.position, spawnPoint.rotation);
+            GameObject itemInstance = poolSystemService.SpawnFromPool(selectedItem.PoolItemSO.name, spawnPoint.position, spawnPoint.rotation);
+
+            if (itemInstance != null) {
+                if (itemInstance.TryGetComponent<ItemController>(out ItemController itemController)) {
+                    itemController.SetSpawner(this);
+                } 
+            }
+        }
+
+        /// <summary>
+        /// Despawns an item and returns it to the pool.
+        /// </summary>
+        /// <param name="itemData"></param>
+        /// <param name="itemInstance"></param>
+        private void Despawn(ItemDataSO itemData, GameObject itemInstance) {
+            poolSystemService.ReturnToPool(itemData.PoolItemSO.name, itemInstance);
         }
 
         /// <summary>
@@ -126,5 +140,17 @@ namespace Features.ItemSpawner {
 
             return itemData[itemData.Length - 1];
         }
+
+        // =====================================================================
+        //
+        //                          Public Methods
+        //
+        // =====================================================================
+        /// <summary>
+        /// Despawns an item and returns it to the pool.
+        /// </summary>
+        /// <param name="itemData"></param>
+        /// <param name="itemInstance"></param>
+        public void ItemDespawnQueue(ItemDataSO itemData, GameObject itemInstance) => Despawn(itemData, itemInstance);
     }
 }
