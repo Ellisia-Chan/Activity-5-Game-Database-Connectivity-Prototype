@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.2D.Animation.Runtime::UnityEngine.U2D.Animation.SpriteLibrarySourceAsset
+  m_Library:
+  - m_Name: Coin
+    m_Hash: 895170659
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Coin_Copper
+      m_Hash: 790385335
+      m_Sprite: {fileID: 8449178401926207585, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 8449178401926207585, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+    - m_Name: Coin_Silver
+      m_Hash: 1036529945
+      m_Sprite: {fileID: 246200477909967752, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 246200477909967752, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+    - m_Name: Coin_Gold
+      m_Hash: 412207886
+      m_Sprite: {fileID: -7785027520232016205, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -7785027520232016205, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  - m_Name: Gem
+    m_Hash: 555597904
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: Gem_Green
+      m_Hash: 70350208
+      m_Sprite: {fileID: -1785865861961776362, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1785865861961776362, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+    - m_Name: Gem_Blue
+      m_Hash: 245205463
+      m_Sprite: {fileID: -2063266990163143804, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -2063266990163143804, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+    - m_Name: Gem_Gold
+      m_Hash: 386031154
+      m_Sprite: {fileID: 6096405236676631357, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 6096405236676631357, guid: 3c3ab23fbad98e34abc7f75874a352f9, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 3
+  m_PrimaryLibraryGUID: 
+  m_ModificationHash: 639245840243205922
+  m_Version: 1

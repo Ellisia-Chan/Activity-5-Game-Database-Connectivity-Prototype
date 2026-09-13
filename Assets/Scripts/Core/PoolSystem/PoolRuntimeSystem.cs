@@ -1,32 +1,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using SO;
+using Core.ServiceLocator;
 
-using ServiceLocator;
-using ServiceLocator.Services;
-
-namespace PoolSystem {
+namespace Core.PoolSystem {
+    /// <summary>
+    /// Manages the creation and management of object pools.
+    /// </summary>
     public class PoolRuntimeSystem : MonoBehaviour, IPoolSystem {
-
+        [Header("Pools")]
         [SerializeField] private List<PoolItemSO> pools;
+
         private Dictionary<string, Queue<GameObject>> poolDictionary;
         private Dictionary<string, PoolItemSO> poolItemDictionary;
         private Dictionary<string, Transform> poolParents;
 
         private void Awake() {
+            // Check if IPoolSystem is already registered
             if (ServiceRegistry.IsRegistered<IPoolSystem>()) {
                 Debug.LogWarning("[PoolRuntimeSystem] IPoolSystem is already registered");
                 Destroy(gameObject);
                 return;
             }
 
+            // Register the IPoolSystem service
             ServiceRegistry.Register<IPoolSystem>(this);
 
             poolDictionary = new Dictionary<string, Queue<GameObject>>();
             poolItemDictionary = new Dictionary<string, PoolItemSO>();
             poolParents = new Dictionary<string, Transform>();
 
+            // Create object pools
             foreach (PoolItemSO pool in pools) {
                 string parentName = "Pool_" + pool.itemName;
                 GameObject parentObject = new GameObject(parentName);
@@ -46,13 +50,21 @@ namespace PoolSystem {
         }
 
         private void OnDestroy() {
+            // Unregister the IPoolSystem service
             if (ServiceRegistry.IsRegistered<IPoolSystem>()) {
                 ServiceRegistry.Unregister<IPoolSystem>(this);
             }
         }
 
 
-
+        /// <summary>
+        /// Spawns an object from the specified pool.
+        /// </summary>
+        /// <param name="itemName"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <param name="parent"></param>
+        /// <returns>Specified <see cref="GameObject"/></returns>
         public GameObject SpawnFromPool(string itemName, Vector3 position, Quaternion rotation = default, Transform parent = null) {
             if (!poolDictionary.TryGetValue(itemName, out Queue<GameObject> poolQueue)) {
                 Debug.LogWarning("Pool with name " + itemName + " doesn't exist.");
@@ -89,6 +101,14 @@ namespace PoolSystem {
             return objectToSpawn;
         }
 
+        /// <summary>
+        /// Returns an object to the specified pool.
+        /// </summary>
+        /// <param name="itemName"></param>
+        /// <param name="objectToReturn"></param>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        /// <param name="parent"></param>
         public void ReturnToPool(string itemName, GameObject objectToReturn, Transform position = null, Quaternion rotation = default, Transform parent = null) {
             if (!poolDictionary.TryGetValue(itemName, out Queue<GameObject> poolQueue)) {
                 Debug.LogWarning("Pool with name " + itemName + " doesn't exist.");
