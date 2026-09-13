@@ -1,4 +1,4 @@
-namespace Core.Enums {
+namespace Core.Enums.GameSystem {
     /// <summary>
     /// The game state of the game
     /// </summary>

@@ -1,8 +1,8 @@
 using UnityEngine;
 using Core.FSM;
-using Core.Enums;
+using Core.Enums.GameSystem;
 
-namespace Core.GameSystem {
+namespace Features.GameSystem {
     /// <summary>
     /// The waiting state of the game
     /// </summary>
@@ -36,7 +36,7 @@ namespace Core.GameSystem {
         public GameState_Playing(GameManager owner, StateMachine<GameManager> stateMachine) : base(owner, stateMachine) { }
 
         public override void OnEnter() {
-
+            
         }
 
         public override void OnExit() {
@@ -48,7 +48,14 @@ namespace Core.GameSystem {
         }
 
         public override void OnUpdate() {
+            // Count down the remaining game time
+            owner.UpdateRemainingTime(Time.deltaTime);
 
+            // Prevent negative values
+            if (owner.RemainingTime <= 0f) {
+                owner.UpdateRemainingTime(0f);
+                owner.SetGameState(GameState.Over);
+            }
         }
     }
 

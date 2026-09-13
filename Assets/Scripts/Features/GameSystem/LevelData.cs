@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Core.GameSystem {
+namespace Features.GameSystem {
     [CreateAssetMenu(fileName = "LevelData", menuName = "ScriptableObjects/Level Data")]
     public class LevelData : ScriptableObject {
         public int levelID = 0;
