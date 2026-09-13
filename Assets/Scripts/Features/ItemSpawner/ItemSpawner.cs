@@ -1,4 +1,4 @@
-using Core.Enums;
+using Core.Enums.GameSystem;
 using Core.Events.GameSystem;
 using Core.EventSystem;
 using Core.ServiceLocator;
@@ -42,7 +42,6 @@ namespace Features.ItemSpawnerSystem {
             poolSystemService = ServiceRegistry.Get<IPoolSystem>();
             gameSystemService = ServiceRegistry.Get<IGameSystem>();
 
-            // Initialize first spawn cooldown
             _spawnCooldown = gameSystemService.LevelData.GetSpawnInterval(0f);
         }
 
@@ -59,7 +58,10 @@ namespace Features.ItemSpawnerSystem {
         private void OnGameStateChanged(Evt_OnGameStateChanged evt) {
             if (evt.NewState == GameState.Playing) {
                 _isSpawningActive = true;
-            } else {
+
+                _spawnCooldown = gameSystemService.LevelData.GetSpawnInterval(0f);
+            }
+            else {
                 _isSpawningActive = false;
             }
         }
@@ -79,8 +81,10 @@ namespace Features.ItemSpawnerSystem {
 
             if (_spawnCooldown <= 0f) {
                 Spawn();
-                // Fetch next cooldown based on the updated time
-                _spawnCooldown = gameSystemService.LevelData.GetSpawnInterval(gameSystemService.ElapsedTime);
+
+                float elapsedTime = gameSystemService.LevelData.levelDuration - gameSystemService.RemainingTime;
+
+                _spawnCooldown = gameSystemService.LevelData.GetSpawnInterval(elapsedTime);
             }
         }
 

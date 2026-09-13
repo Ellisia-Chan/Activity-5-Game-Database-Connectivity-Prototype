@@ -2,7 +2,7 @@ using UnityEngine;
 using Features.ItemSpawnerSystem;
 using Core.EventSystem;
 using Core.Events.GameSystem;
-using Core.Enums;
+using Core.Enums.GameSystem;
 
 namespace Features.Item {
     /// <summary>

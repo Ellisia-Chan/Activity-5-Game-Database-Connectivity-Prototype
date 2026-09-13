@@ -1,5 +1,5 @@
 using UnityEngine;
-using Core.Enums;
+using Core.Enums.GameSystem;
 using Core.EventSystem;
 using Core.Events.GameSystem;
 
@@ -19,7 +19,7 @@ namespace Features.Player {
 
         // --- Private Properties ---
         private GameState currenGameState;
-
+        private bool resetParam = false;
 
         // =====================================================================
         //
@@ -41,6 +41,8 @@ namespace Features.Player {
         private void Update() {
             if (currenGameState == GameState.Playing) {
                 HandleAnimations(); 
+            } else if (resetParam) {
+                ResetAnimation(false);
             }
         }
 
@@ -52,6 +54,8 @@ namespace Features.Player {
         // =====================================================================
         private void OnGameStateChanged(Evt_OnGameStateChanged evt) {
             currenGameState = evt.NewState;
+
+            if (currenGameState != GameState.Playing) { resetParam = true; }
         }
 
         // =====================================================================
@@ -71,6 +75,16 @@ namespace Features.Player {
             else {
                 _animator.SetBool(isWalkingAnimationParam, false);
             }
+        }
+
+        /// <summary>
+        /// Resets player animations to idle
+        /// </summary>
+        /// <param name="reset"></param>
+        private void ResetAnimation(bool reset) {
+            _animator.SetBool(isWalkingAnimationParam, reset);
+
+            resetParam = false;
         }
     }
 }
