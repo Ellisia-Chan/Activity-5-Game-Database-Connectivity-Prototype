@@ -1,9 +1,12 @@
-using UnityEngine;
-using Core.ServiceLocator;
-using Core.FSM;
 using Core.Enums.GameSystem;
-using Core.EventSystem;
 using Core.Events.GameSystem;
+using Core.Events.InputSystem;
+using Core.Events.UI;
+using Core.EventSystem;
+using Core.FSM;
+using Core.ServiceLocator;
+using Editor;
+using UnityEngine;
 
 namespace Features.GameSystem {
     /// <summary>
@@ -13,6 +16,7 @@ namespace Features.GameSystem {
 
         [Header("Starting State")]
         [Tooltip("The starting state of the game")]
+        [SingleSelectionFlag]
         [SerializeField] private GameState startingState = GameState.Waiting;
 
         [Header("Level Data")]
@@ -21,13 +25,13 @@ namespace Features.GameSystem {
         // --- Private Properties ---
         private StateMachine<GameManager> gameFSM;
 
-        private GameState lastGameState;
 
         // --- Public Properties ---
         public GameState CurrentGameState { get; private set; }
+        public GameState LastGameState { get; private set; }
 
 
-        // --- Interface Properties
+        // --- Interface Properties ---
         public float RemainingTime { get; private set; }
         public LevelData LevelData => levelData;
 
@@ -45,6 +49,16 @@ namespace Features.GameSystem {
             else {
                 ServiceRegistry.Register<IGameSystem>(this);
             }
+        }
+
+        private void OnEnable() {
+            EventBus.Subscribe<Evt_OnPauseAction>(OnPauseAction);
+            EventBus.Subscribe<Evt_OnResumeButtonAction>(OnResumeButtonAction);
+        }
+
+        private void OnDisable() {
+            EventBus.Unsubscribe<Evt_OnPauseAction>(OnPauseAction);
+            EventBus.Unsubscribe<Evt_OnResumeButtonAction>(OnResumeButtonAction);
         }
 
         private void Start() {
@@ -67,6 +81,25 @@ namespace Features.GameSystem {
             ServiceRegistry.Unregister<IGameSystem>(this);
         }
 
+
+        // =====================================================================
+        //
+        //                          Event Handlers
+        //
+        // =====================================================================
+        private void OnPauseAction(Evt_OnPauseAction evt) {
+            if (CurrentGameState == GameState.Playing) {
+                SetGameState(GameState.Paused);
+            }
+            else if (CurrentGameState == GameState.Paused) {
+                SetGameState(GameState.Playing);
+            }
+        }
+
+        private void OnResumeButtonAction(Evt_OnResumeButtonAction evt) {
+            SetGameState(GameState.Playing);
+        }
+
         // =====================================================================
         //
         //                          Public Methods
@@ -77,9 +110,12 @@ namespace Features.GameSystem {
         /// </summary>
         /// <param name="state"></param>
         public void SetGameState(GameState state) {
-            CurrentGameState = state;
+            if (CurrentGameState == state) return;
 
-            switch (state) {
+            CurrentGameState = state;
+            LastGameState = state;
+
+            switch (CurrentGameState) {
                 case GameState.Waiting:
                     gameFSM.ChangeState(new GameState_Waiting(this, gameFSM));
                     break;
@@ -96,7 +132,7 @@ namespace Features.GameSystem {
                     break;
             }
 
-            EventBus.Publish(new Evt_OnGameStateChanged(state));
+            EventBus.Publish(new Evt_OnGameStateChanged(CurrentGameState));
         }
 
         /// <summary>
