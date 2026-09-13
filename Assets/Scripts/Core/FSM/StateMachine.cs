@@ -1,6 +1,10 @@
 using UnityEngine;
 
-namespace FSM {
+namespace Core.FSM {
+    /// <summary>
+    /// FSM
+    /// </summary>
+    /// <typeparam name="TOwner"></typeparam>
     public class StateMachine<TOwner> {
         public  IState currentState { get; private set; }
         private TOwner owner;
@@ -9,6 +13,10 @@ namespace FSM {
             this.owner = owner;
         }
 
+        /// <summary>
+        /// Change state
+        /// </summary>
+        /// <param name="newState"></param>
         public void ChangeState(IState newState) {
             if (currentState == newState) return;
 
@@ -17,10 +25,17 @@ namespace FSM {
             currentState?.OnEnter();
         }
 
+        /// <summary>
+        /// Update state
+        /// </summary>
         public void Update() {
             currentState?.OnUpdate();
         }
 
+
+        /// <summary>
+        /// Fixed update
+        /// </summary>
         public void FixedUpdate() {
             currentState?.OnFixedUpdate();
         }

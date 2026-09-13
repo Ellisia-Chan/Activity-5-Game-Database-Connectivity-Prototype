@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Services.InputSystem {
+namespace Core.ServiceLocator {
     /// <summary>
     /// Service interface for InputSystem
     /// </summary>

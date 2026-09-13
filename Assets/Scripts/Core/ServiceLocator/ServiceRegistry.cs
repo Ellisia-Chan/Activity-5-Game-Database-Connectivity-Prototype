@@ -20,7 +20,7 @@ using UnityEngine;
 /// gameManager.LoadLevel("Level1");
 /// </code>
 /// </example>
-namespace ServiceLocator {
+namespace Core.ServiceLocator {
     public static class ServiceRegistry {
         // Use ConcurrentDictionary for thread-safe operations without explicit locking.
         private static readonly ConcurrentDictionary<Type, object> services = new ConcurrentDictionary<Type, object>();
@@ -85,7 +85,7 @@ namespace ServiceLocator {
 
         /// <summary>
         /// Retrieves a service from the locator. Throws an exception if the service is not found.
-        /// This method is thread-safe.
+        /// This method is thread-safe. ALWAYS USE THIS METHOD IN START MONOBEHAVIOUR METHOD
         /// </summary>
         /// <typeparam name="T">The type of the service to retrieve.</typeparam>
         /// <returns>The service instance.</returns>
