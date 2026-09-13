@@ -3,7 +3,7 @@ using UnityEngine;
 using Core.ServiceLocator;
 using Core.EventSystem;
 using Core.Events.GameSystem;
-using Core.Enums;
+using Core.Enums.GameSystem;
 
 namespace Features.Player {
     /// <summary>
@@ -61,6 +61,8 @@ namespace Features.Player {
             if (currentGameState == GameState.Playing) {
                 HandleMovement();
                 SpeedControl(); 
+            } else {
+                ResetRb(); 
             }
         }
 
@@ -113,5 +115,10 @@ namespace Features.Player {
                 rb.linearVelocity = rb.linearVelocity.normalized * moveSpeed;
             }
         }
+
+        /// <summary>
+        /// Resets player velocity
+        /// </summary>
+        private void ResetRb() { rb.linearVelocity = Vector2.zero; }
     }
 }

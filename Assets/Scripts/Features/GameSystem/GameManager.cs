@@ -1,11 +1,11 @@
 using UnityEngine;
 using Core.ServiceLocator;
 using Core.FSM;
-using Core.Enums;
+using Core.Enums.GameSystem;
 using Core.EventSystem;
 using Core.Events.GameSystem;
 
-namespace Core.GameSystem {
+namespace Features.GameSystem {
     /// <summary>
     /// The game manager. Handles the game lifecycle
     /// </summary>
@@ -28,7 +28,7 @@ namespace Core.GameSystem {
 
 
         // --- Interface Properties
-        public float ElapsedTime { get; private set; }
+        public float RemainingTime { get; private set; }
         public LevelData LevelData => levelData;
 
 
@@ -51,11 +51,12 @@ namespace Core.GameSystem {
             gameFSM = new StateMachine<GameManager>(this);
 
             SetGameState(startingState);
+
+            RemainingTime = levelData.levelDuration;
         }
 
         private void Update() {
             gameFSM?.Update();
-            HandleGameTimer();
         }
 
         private void FixedUpdate() {
@@ -64,21 +65,6 @@ namespace Core.GameSystem {
 
         private void OnDestroy() {
             ServiceRegistry.Unregister<IGameSystem>(this);
-        }
-
-        // =====================================================================
-        //
-        //                          Private Methods
-        //
-        // =====================================================================
-        private void HandleGameTimer() {
-            if (CurrentGameState == GameState.Playing) {
-                ElapsedTime += Time.deltaTime;
-            }
-
-            if (ElapsedTime >= levelData.levelDuration) {
-                SetGameState(GameState.Over);
-            }
         }
 
         // =====================================================================
@@ -111,6 +97,14 @@ namespace Core.GameSystem {
             }
 
             EventBus.Publish(new Evt_OnGameStateChanged(state));
+        }
+
+        /// <summary>
+        /// Updates the remaining game time
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        public void UpdateRemainingTime(float deltaTime) {
+            RemainingTime -= deltaTime;
         }
     }
 }

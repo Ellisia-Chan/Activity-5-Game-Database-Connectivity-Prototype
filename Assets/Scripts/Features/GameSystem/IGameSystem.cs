@@ -1,10 +1,10 @@
 
-using Core.GameSystem;
+using Features.GameSystem;
 using UnityEngine;
 
 namespace Core.ServiceLocator {
 	public interface IGameSystem {
-		public float ElapsedTime { get; }
+		public float RemainingTime { get; }
         public LevelData LevelData { get; }
     }
 

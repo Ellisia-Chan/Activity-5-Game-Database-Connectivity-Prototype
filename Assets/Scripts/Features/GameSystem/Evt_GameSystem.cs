@@ -1,4 +1,4 @@
-using Core.Enums;
+using Core.Enums.GameSystem;
 
 namespace Core.Events.GameSystem{
     /// <summary>
