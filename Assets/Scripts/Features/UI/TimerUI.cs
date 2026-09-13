@@ -3,6 +3,9 @@ using TMPro;
 using Core.ServiceLocator;
 
 namespace Features.UI {
+    /// <summary>
+    /// Handles updating the timer UI
+    /// </summary>
     public class TimerUI : MonoBehaviour {
         [Header("References")]
         [SerializeField] private TextMeshProUGUI timerText;
@@ -29,6 +32,9 @@ namespace Features.UI {
         //                          Private Methods
         //
         // =====================================================================
+        /// <summary>
+        /// Handles updating the timer
+        /// </summary>
         private void HandleTimer() {
             float time = gameSystemService.RemainingTime;
 

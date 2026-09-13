@@ -68,6 +68,9 @@ namespace Features.Item {
         //                          Private Methods
         //
         // =====================================================================
+        /// <summary>
+        /// Resets the item's state.
+        /// </summary>
         private void ResetState() {
             rb.linearVelocity = Vector2.zero;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -79,6 +82,10 @@ namespace Features.Item {
         //                          Public Methods
         //
         // =====================================================================
+        /// <summary>
+        /// Sets the item's spawner.
+        /// </summary>
+        /// <param name="itemSpawner"></param>
         public void SetSpawner(ItemSpawner itemSpawner) => this.itemSpawner = itemSpawner;
 
         // =====================================================================
@@ -86,6 +93,9 @@ namespace Features.Item {
         //                          Interface Methods
         //
         // =====================================================================
+        /// <summary>
+        /// Returns the item to the spawner.
+        /// </summary>
         public void ReturnToSpawner() {
             itemSpawner.ItemDespawnQueue(itemData, gameObject);
         }
