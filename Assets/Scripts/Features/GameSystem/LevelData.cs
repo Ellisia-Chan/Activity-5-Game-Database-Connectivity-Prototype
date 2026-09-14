@@ -1,6 +1,9 @@
 using UnityEngine;
 
 namespace Features.GameSystem {
+    /// <summary>
+    /// Data for a level
+    /// </summary>
     [CreateAssetMenu(fileName = "LevelData", menuName = "ScriptableObjects/Level Data")]
     public class LevelData : ScriptableObject {
         public int levelID = 0;

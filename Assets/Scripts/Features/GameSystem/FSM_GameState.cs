@@ -67,11 +67,13 @@ namespace Features.GameSystem {
         public GameState_Paused(GameManager owner, StateMachine<GameManager> stateMachine) : base(owner, stateMachine) { }
 
         public override void OnEnter() {
-
+            Time.timeScale = 0f;
         }
 
         public override void OnExit() {
+            if (owner.LastGameState == GameState.Playing) owner.SetGameState(GameState.Playing);
 
+            Time.timeScale = 1f;
         }
 
         public override void OnFixedUpdate() {

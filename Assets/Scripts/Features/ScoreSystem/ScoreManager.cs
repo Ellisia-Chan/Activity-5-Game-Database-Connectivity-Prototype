@@ -53,5 +53,17 @@ namespace Features.ScoreSystem {
 
             EventBus.Publish(new Evt_OnScoreUpdate(score));
         }
+
+        // =====================================================================
+        //
+        //                          Interface Methods
+        //
+        // =====================================================================
+        /// <summary>
+        /// Returns the final score
+        /// </summary>
+        /// <returns></returns>
+        public int GetFinalScore() => score;
+
     }
 }

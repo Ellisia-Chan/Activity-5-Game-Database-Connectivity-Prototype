@@ -4,6 +4,7 @@ using Core.ServiceLocator;
 using Core.EventSystem;
 using Core.Events.GameSystem;
 using Core.Enums.GameSystem;
+using Core.Events.PlayerSystem;
 
 namespace Features.Player {
     /// <summary>
@@ -14,6 +15,7 @@ namespace Features.Player {
 
         [Header("Movement Settings")]
         [SerializeField, Min(0f)] private float moveSpeed = 6f;
+        [SerializeField, Min(0f)] private float skillSpeed = 10f;
 
         // --- Service Dependencies ---
         private IInputSystem inputSystemService;
@@ -22,6 +24,7 @@ namespace Features.Player {
         private Rigidbody2D rb;
         private Vector2 moveDir;
         private GameState currentGameState;
+        private float defaultSpeed;
 
         // --- Public Properties ---
         public bool IsMoving { get; private set; }
@@ -37,14 +40,20 @@ namespace Features.Player {
 
             rb.gravityScale = 0f;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+            defaultSpeed = moveSpeed;
         }
 
         private void OnEnable() {
             EventBus.Subscribe<Evt_OnGameStateChanged>(OnGameStateChanged);
+            EventBus.Subscribe<Evt_OnSkillActivated>(OnSkillActivated);
+            EventBus.Subscribe<Evt_OnSkillDeactivated>(OnSkillDeactivated);
         }
 
         private void OnDisable() {
             EventBus.Unsubscribe<Evt_OnGameStateChanged>(OnGameStateChanged);
+            EventBus.Unsubscribe<Evt_OnSkillActivated>(OnSkillActivated);
+            EventBus.Unsubscribe<Evt_OnSkillDeactivated>(OnSkillDeactivated);
         }
 
         private void Start() {
@@ -73,6 +82,14 @@ namespace Features.Player {
         // =====================================================================
         private void OnGameStateChanged(Evt_OnGameStateChanged evt) {
             currentGameState = evt.NewState;
+        }
+
+        private void OnSkillActivated(Evt_OnSkillActivated evt) {
+            moveSpeed = skillSpeed;
+        }
+
+        private void OnSkillDeactivated(Evt_OnSkillDeactivated evt) {
+            moveSpeed = defaultSpeed;
         }
 
         // =====================================================================

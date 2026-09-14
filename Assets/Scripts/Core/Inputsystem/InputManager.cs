@@ -1,6 +1,9 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 using Core.ServiceLocator;
+using Core.EventSystem;
+using Core.Events.InputSystem;
 
 namespace InputSystem {
     /// <summary>
@@ -29,15 +32,38 @@ namespace InputSystem {
 
         private void OnEnable() {
             inputActions.Enable();
+
+            inputActions.Player.Skill.performed += OnSkillPerformed;
+
+            inputActions.General.Pause.performed += OnPauseAction;
         }
 
         private void OnDisable() {
             inputActions.Disable();
+
+            inputActions.Player.Skill.performed -= OnSkillPerformed;
+
+            inputActions.General.Pause.performed -= OnPauseAction;
         }
 
         private void OnDestroy() {
             ServiceRegistry.Unregister<IInputSystem>(this);
         }
+
+        // =====================================================================
+        //
+        //                          Interface Methods
+        //
+        // =====================================================================
+        private void OnSkillPerformed(InputAction.CallbackContext context) {
+            EventBus.Publish(new Evt_OnSkillPerformed());
+        }
+
+        private void OnPauseAction(InputAction.CallbackContext context) {
+            EventBus.Publish(new Evt_OnPauseAction());
+        }
+
+
         // =====================================================================
         //
         //                          Interface Methods

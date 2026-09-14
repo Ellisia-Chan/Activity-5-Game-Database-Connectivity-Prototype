@@ -5,6 +5,9 @@ using Core.EventSystem;
 using Core.Events.ScoreSystem;
 
 namespace Features.UI {
+    /// <summary>
+    /// Handles updating the score UI
+    /// </summary>
 	public class ScoreUI : MonoBehaviour {
 		[Header("References")]
 		[SerializeField] private TextMeshProUGUI scoreText;
