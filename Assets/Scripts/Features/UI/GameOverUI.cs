@@ -1,4 +1,5 @@
 using Core.Enums.GameSystem;
+using Core.Enums.SceneSystem;
 using Core.Events.GameSystem;
 using Core.EventSystem;
 using Core.ServiceLocator;
@@ -23,6 +24,7 @@ namespace Features.UI {
 
         // --- Service Dependencies ---
         private IScoreSystem socreSystemService;
+        private ISceneSystem sceneSystemService;
 
         // =====================================================================
         //
@@ -35,6 +37,7 @@ namespace Features.UI {
 
         private void Start() {
             socreSystemService = ServiceRegistry.Get<IScoreSystem>();
+            sceneSystemService = ServiceRegistry.Get<ISceneSystem>();
 
             scoreText.text = "0";
         }
@@ -91,11 +94,19 @@ namespace Features.UI {
         /// <summary>
         /// Restarts the game invoke by the retry button
         /// </summary>
-        public void RetryGame() { }
+        public void RetryGame() {
+            sceneSystemService.LoadScene(
+                SceneID.GameScene, SceneID.LoadingScene, showLoadingScreen: true, isAsync: true
+                );
+        }
 
         /// <summary>
         /// Returns to the main menu invoke by the main menu button
         /// </summary>
-        public void MainMenu() { }
+        public void MainMenu() {
+            sceneSystemService.LoadScene(
+                SceneID.MainMenuScene, SceneID.LoadingScene, showLoadingScreen: true, isAsync: true
+                );
+        }
     }
 }

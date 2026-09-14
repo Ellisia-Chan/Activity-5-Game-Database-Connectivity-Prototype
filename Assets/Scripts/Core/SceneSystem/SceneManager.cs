@@ -14,6 +14,8 @@ namespace Core.SceneSystem {
     /// Manages the loading and unloading of scenes.
     /// </summary>
     public class SceneManager : MonoBehaviour, ISceneSystem {
+        [Header("Settings")]
+        [SerializeField] private float loadingScenePostDelay = 1f;
         // =====================================================================
         //
         //                          Private Fields
@@ -153,12 +155,19 @@ namespace Core.SceneSystem {
             Scene loadingScreenScene = default;
 
             if (showLoadingScreen && loadingScreenID != SceneID.None) {
-                // Loaded additively so it can be layered on top and cleanly
-                // unloaded once the target scene is active, rather than being
-                // silently replaced by the target scene load that follows.
+                // Match the target scene's mode: if the target is loading as
+                // Single (replacing everything), the loading screen should
+                // become the root scene too, rather than stacking additively
+                // on top of whatever scene triggered this load. If the target
+                // is Additive, the loading screen stays additive so it can
+                // layer on top and be cleanly unloaded afterward.
+                LoadSceneMode loadingScreenMode = mode == LoadSceneMode.Single
+                    ? LoadSceneMode.Single
+                    : LoadSceneMode.Additive;
+
                 yield return UnitySceneManager.LoadSceneAsync(
                     loadingScreenID.ToString(),
-                    LoadSceneMode.Additive
+                    loadingScreenMode
                 );
                 loadingScreenScene = UnitySceneManager.GetSceneByName(loadingScreenID.ToString());
 
@@ -190,16 +199,41 @@ namespace Core.SceneSystem {
                 }
             }
 
-            AsyncOperation loadOperation =
-                UnitySceneManager.LoadSceneAsync(targetSceneName, mode);
+            AsyncOperation loadOperation = UnitySceneManager.LoadSceneAsync(targetSceneName, mode);
 
-            while (!loadOperation.isDone) {
+            if (loadOperation == null) {
+                Debug.LogError(
+                    $"[SceneManager] Failed to start loading scene '{targetSceneName}'. " +
+                    "Check that it's added to Build Settings and the name matches exactly."
+                );
+
+                if (loadingScreenScene.IsValid()) {
+                    yield return UnitySceneManager.UnloadSceneAsync(loadingScreenScene);
+                }
+
+                _isLoading = false;
+                yield break;
+            }
+
+            loadOperation.allowSceneActivation = false;
+
+            while (loadOperation.progress < 0.9f) {
                 float progress = Mathf.Clamp01(loadOperation.progress / 0.9f);
-
                 EventBus.Publish(new Evt_OnSceneLoadProgress(progress));
-
                 yield return null;
             }
+
+            EventBus.Publish(new Evt_OnSceneLoadProgress(1f));
+
+            if (loadingScenePostDelay > 0f) {
+                // Realtime, not scaled time — scene transitions (e.g. leaving
+                // a paused game where Time.timeScale is 0) must not be gated
+                // by whatever the game's current timeScale happens to be.
+                yield return new WaitForSecondsRealtime(loadingScenePostDelay);
+            }
+
+            loadOperation.allowSceneActivation = true;
+            yield return loadOperation;
 
             if (mode == LoadSceneMode.Additive) {
                 Scene loadedScene =
