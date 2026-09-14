@@ -2,6 +2,9 @@ using Core.Enums.GameSystem;
 using Core.Events.GameSystem;
 using Core.Events.UI;
 using Core.EventSystem;
+using Core.ServiceLocator;
+using Core.Enums.SceneSystem;
+
 using Editor;
 using UnityEngine;
 
@@ -17,6 +20,9 @@ namespace Features.UI {
         [Header("UI Panels")]
         [SerializeField] private GameObject panel;
 
+        // --- Service Dependencies ---
+        private ISceneSystem sceneSystemService;
+
 
         // =====================================================================
         //
@@ -25,6 +31,10 @@ namespace Features.UI {
         // =====================================================================
         private void Awake() {
             panel.SetActive(false);
+        }
+
+        private void Start() {
+            sceneSystemService = ServiceRegistry.Get<ISceneSystem>();
         }
 
         private void OnEnable() {
@@ -64,8 +74,19 @@ namespace Features.UI {
         //                          Public Methods
         //
         // =====================================================================
+        /// <summary>
+        /// Resumes the game
+        /// </summary>
         public void ResumePause() {
             EventBus.Publish(new Evt_OnResumeButtonAction());
+        }
+
+
+        /// <summary>
+        /// Returns to the main menu
+        /// </summary>
+        public void MainMenu() {
+            sceneSystemService.LoadScene(SceneID.MainMenuScene, SceneID.LoadingScene, showLoadingScreen: true, isAsync: true);
         }
     }
 }

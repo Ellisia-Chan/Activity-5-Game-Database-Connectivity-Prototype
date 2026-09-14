@@ -1,4 +1,5 @@
 using Core.Enums.GameSystem;
+using Core.Enums.SceneSystem;
 using Core.Events.GameSystem;
 using Core.EventSystem;
 using Core.ServiceLocator;
@@ -7,6 +8,9 @@ using TMPro;
 using UnityEngine;
 
 namespace Features.UI {
+    /// <summary>
+    /// Handles the game over UI
+    /// </summary>
     public class GameOverUI : MonoBehaviour {
         [Header("States")]
         [SingleSelectionFlag]
@@ -20,6 +24,7 @@ namespace Features.UI {
 
         // --- Service Dependencies ---
         private IScoreSystem socreSystemService;
+        private ISceneSystem sceneSystemService;
 
         // =====================================================================
         //
@@ -32,6 +37,7 @@ namespace Features.UI {
 
         private void Start() {
             socreSystemService = ServiceRegistry.Get<IScoreSystem>();
+            sceneSystemService = ServiceRegistry.Get<ISceneSystem>();
 
             scoreText.text = "0";
         }
@@ -73,6 +79,9 @@ namespace Features.UI {
             panel.SetActive(state);
         }
 
+        /// <summary>
+        /// Handles updating the game over UI on game over state
+        /// </summary>
         private void HandleGameOverUI() {
             scoreText.text = socreSystemService.GetFinalScore().ToString("N0");
         }
@@ -85,11 +94,19 @@ namespace Features.UI {
         /// <summary>
         /// Restarts the game invoke by the retry button
         /// </summary>
-        public void RetryGame() { }
+        public void RetryGame() {
+            sceneSystemService.LoadScene(
+                SceneID.GameScene, SceneID.LoadingScene, showLoadingScreen: true, isAsync: true
+                );
+        }
 
         /// <summary>
         /// Returns to the main menu invoke by the main menu button
         /// </summary>
-        public void MainMenu() { }
+        public void MainMenu() {
+            sceneSystemService.LoadScene(
+                SceneID.MainMenuScene, SceneID.LoadingScene, showLoadingScreen: true, isAsync: true
+                );
+        }
     }
 }
