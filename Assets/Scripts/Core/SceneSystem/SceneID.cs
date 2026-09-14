@@ -6,6 +6,7 @@ namespace Core.Enums.SceneSystem {
 	/// Enum must match the name of the scene in the build settings
 	/// </summary>
 	public enum SceneID {
+		None,
 		MainMenuScene,
         LoadingScene,
 		GameScene,

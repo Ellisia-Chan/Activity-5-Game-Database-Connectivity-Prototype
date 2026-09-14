@@ -7,6 +7,9 @@ using TMPro;
 using UnityEngine;
 
 namespace Features.UI {
+    /// <summary>
+    /// Handles the game over UI
+    /// </summary>
     public class GameOverUI : MonoBehaviour {
         [Header("States")]
         [SingleSelectionFlag]
@@ -73,6 +76,9 @@ namespace Features.UI {
             panel.SetActive(state);
         }
 
+        /// <summary>
+        /// Handles updating the game over UI on game over state
+        /// </summary>
         private void HandleGameOverUI() {
             scoreText.text = socreSystemService.GetFinalScore().ToString("N0");
         }
