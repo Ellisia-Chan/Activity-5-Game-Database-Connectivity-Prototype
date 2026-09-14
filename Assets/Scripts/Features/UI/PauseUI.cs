@@ -74,10 +74,17 @@ namespace Features.UI {
         //                          Public Methods
         //
         // =====================================================================
+        /// <summary>
+        /// Resumes the game
+        /// </summary>
         public void ResumePause() {
             EventBus.Publish(new Evt_OnResumeButtonAction());
         }
 
+
+        /// <summary>
+        /// Returns to the main menu
+        /// </summary>
         public void MainMenu() {
             sceneSystemService.LoadScene(SceneID.MainMenuScene, SceneID.LoadingScene, showLoadingScreen: true, isAsync: true);
         }
