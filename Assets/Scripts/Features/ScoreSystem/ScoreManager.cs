@@ -17,7 +17,7 @@ namespace Features.ScoreSystem {
         //
         //                          Unity Lifecycle
         //
-        // =====================================================================A
+        // =====================================================================
         private void Awake() {
             if (ServiceRegistry.IsRegistered<IScoreSystem>()) {
                 Destroy(gameObject);
