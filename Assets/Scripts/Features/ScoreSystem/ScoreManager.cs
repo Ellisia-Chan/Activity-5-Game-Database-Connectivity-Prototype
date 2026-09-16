@@ -17,7 +17,7 @@ namespace Features.ScoreSystem {
         //
         //                          Unity Lifecycle
         //
-        // =====================================================================A
+        // =====================================================================
         private void Awake() {
             if (ServiceRegistry.IsRegistered<IScoreSystem>()) {
                 Destroy(gameObject);
@@ -53,5 +53,17 @@ namespace Features.ScoreSystem {
 
             EventBus.Publish(new Evt_OnScoreUpdate(score));
         }
+
+        // =====================================================================
+        //
+        //                          Interface Methods
+        //
+        // =====================================================================
+        /// <summary>
+        /// Returns the final score
+        /// </summary>
+        /// <returns></returns>
+        public int GetFinalScore() => score;
+
     }
 }
